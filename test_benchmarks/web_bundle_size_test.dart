@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
@@ -28,7 +26,7 @@ void main() {
       ]);
       await _runProcess('gzip', ['-k', js]);
       final bundleSize = await _measureSize(js);
-      final gzipBundleSize = await _measureSize(js + '.gz');
+      final gzipBundleSize = await _measureSize('$js.gz');
 
       if (bundleSize > bundleSizeBenchmark) {
         fail(

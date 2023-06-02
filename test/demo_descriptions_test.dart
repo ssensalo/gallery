@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'package:collection/collection.dart';
 import 'package:flutter_gen/gen_l10n/gallery_localizations_en.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,21 +30,21 @@ void main() {
   });
 
   test('Demo descriptions are unique and correct', () {
-    final allDemos = allGalleryDemos(GalleryLocalizationsEn());
+    final allDemos = Demos.all(GalleryLocalizationsEn());
     final allDemoDescriptions = allDemos.map((d) => d.describe).toList();
 
     expect(_isUnique(allDemoDescriptions), true);
     expect(
       _stringListEquality.equals(
         allDemoDescriptions,
-        allGalleryDemoDescriptions(),
+        Demos.allDescriptions(),
       ),
       true,
     );
   });
 
   test('Special demo descriptions are correct', () {
-    final allDemos = allGalleryDemoDescriptions();
+    final allDemos = Demos.allDescriptions();
 
     final specialDemos = <String>[
       'shrine@study',

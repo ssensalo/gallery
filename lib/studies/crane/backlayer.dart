@@ -2,25 +2,26 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 
 abstract class BackLayerItem extends StatefulWidget {
   final int index;
 
-  const BackLayerItem({Key key, @required this.index}) : super(key: key);
+  const BackLayerItem({super.key, required this.index});
 }
 
 class BackLayer extends StatefulWidget {
   final List<BackLayerItem> backLayerItems;
   final TabController tabController;
 
-  const BackLayer({Key key, this.backLayerItems, this.tabController})
-      : super(key: key);
+  const BackLayer({
+    super.key,
+    required this.backLayerItems,
+    required this.tabController,
+  });
 
   @override
-  _BackLayerState createState() => _BackLayerState();
+  State<BackLayer> createState() => _BackLayerState();
 }
 
 class _BackLayerState extends State<BackLayer> {

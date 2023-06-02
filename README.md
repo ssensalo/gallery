@@ -8,26 +8,17 @@ wild.
 
 ![Flutter Gallery](https://user-images.githubusercontent.com/6655696/73928238-0d7fcc80-48d3-11ea-8a7e-ea7dc5d6e713.png)
 
-## Running Flutter Gallery on Flutter's master channel
+## Features
 
-The Flutter Gallery targets Flutter's master channel. As such, it can take advantage
-of new SDK features that haven't landed in the stable channel.
-
-If you'd like to run the Flutter Gallery, make sure to switch to the master channel
-first:
-
-```bash
-flutter channel master
-flutter upgrade
-```
-
-When you're done, use this command to return to the safety of the stable
-channel:
-
-```bash
-flutter channel stable
-flutter upgrade
-```
+- Showcase for `material`, `cupertino`, and other widgets
+- [Adaptive layout](lib/layout/adaptive.dart) for mobile and desktop
+- State restoration support
+- Settings to text scaling, text direction, locale, theme, and more...
+- Demo for `animations`
+- Foldable support and demo for `dual_screen`
+- Deferred loading
+- CI/CD
+- ...and much more!
 
 ## Supported Platforms
 
@@ -39,9 +30,11 @@ These include:
 - web ([gallery.flutter.dev](https://gallery.flutter.dev/))
 - macOS ([.zip][latest release])
 - Linux ([.tar.gz][latest release])
-- Windows ([.zip][latest release])
+- Windows ([.zip][latest release], [.msix](https://www.microsoft.com/store/productId/9PDWCTDFC7QQ))
 
-One can run the gallery locally for any of these platforms. For desktop platforms, 
+## Running
+
+One can run the gallery locally for any of these platforms. For desktop platforms,
 please see the [Flutter docs](https://docs.flutter.dev/desktop) for the latest
 requirements.
 
@@ -51,29 +44,33 @@ flutter pub get
 flutter run
 ```
 
-Additionally, the UI adapts between mobile and desktop layouts regardless of the
-platform it runs on. This is determined based on window size as outlined in
-[adaptive.dart](lib/layout/adaptive.dart).
+<details>
+<summary>Troubleshooting</summary>
+
+### Flutter `master` channel
+
+The Flutter Gallery targets Flutter's `master` channel. As such, it can take advantage
+of new SDK features that haven't landed in the stable channel.
+
+If you'd like to run the Flutter Gallery, you may have to switch to the `master` channel
+first:
+
+```bash
+flutter channel master
+flutter upgrade
+```
+
+When you're done, use this command to return to the safety of the `stable`
+channel:
+
+```bash
+flutter channel stable
+flutter upgrade
+```
+
+</details>
 
 ## Development
-
-<details>
-  <summary>Including a new splash animation</summary>
-
-1. Convert your animation to a `.gif` file.
-   Ideally, use a background color of `0xFF030303` to ensure the animation
-   blends into the background of the app.
-
-2. Add your new `.gif` file to the assets directory under
-   `assets/splash_effects`. Ensure the name follows the format
-   `splash_effect_$num.gif`. The number should be the next number after the
-   current largest number in the repository.
-
-3. Update the map `_effectDurations` in
-[splash.dart](lib/pages/splash.dart) to include the number of the
-new `.gif` as well as its estimated duration. The duration is used to
-determine how long to display the splash animation at launch.
-</details>
 
 <details>
   <summary>Generating localizations</summary>
@@ -106,42 +103,59 @@ more details.
 
 </details>
 
-## Creating a new release (for Flutter org members)
+<details>
+  <summary>Including a new splash animation</summary>
 
-1. **Version bump**: Bump the `pubspec.yaml` version number. This can be in a PR making a change or a separate PR.
-   Use [semantic versioning](https://semver.org/) to determine
-   which part to increment. The version number after the `+` should also be incremented. For example `1.2.3+010203`
-   with a patch should become `1.2.4+010204`.
+1. Convert your animation to a `.gif` file.
+   Ideally, use a background color of `0xFF030303` to ensure the animation
+   blends into the background of the app.
 
-2. **Staging**: After the version bump PR is merged, push a new version tag to master.
+2. Add your new `.gif` file to the assets directory under
+   `assets/splash_effects`. Ensure the name follows the format
+   `splash_effect_$num.gif`. The number should be the next number after the
+   current largest number in the repository.
 
-```bash
-git pull upstream master
-git tag v1.2.4  # note the v
-git push upstream v1.2.4
-```
+3. Update the map `_effectDurations` in
+[splash.dart](lib/pages/splash.dart) to include the number of the
+new `.gif` as well as its estimated duration. The duration is used to
+determine how long to display the splash animation at launch.
+</details>
 
-This will trigger a set of GitHub Actions [workflows](https://github.com/flutter/gallery/tree/master/.github/workflows) that will:
+## Releasing
 
-- Draft a [GitHub release](<(https://github.com/flutter/gallery/releases)>) with automatically generated release notes and packaged builds (.apk, macOS, Windows, and Linux)
-- Deploy the gallery to the Firebase hosted [staging site](https://gallery-staging-flutter-dev.web.app/)
-- Deploy a new Android build to the Play Store [beta track](https://play.google.com/apps/testing/io.flutter.demo.gallery)
+<details>
+  <summary>for flutter-hackers members</summary>
 
-Note: all GitHub Action workflows can also be [run manually](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow)
+The process is largely automated and easy to set in motion.
 
-3. **Production**: Once satisfied,
-   - Publish the drafted [GitHub release](https://github.com/flutter/gallery/releases) (`Edit draft` -> `Publish release`).
-   - Deploy the gallery to the Firebase hosted [production site](https://gallery.flutter.dev) by running [this workflow](https://github.com/flutter/gallery/actions/workflows/deploy_web.yml) with `prod` using GitHub's UI.
-   - Promote the Play Store beta to production by running [this workflow](https://github.com/flutter/gallery/actions/workflows/deploy_play_store.yml) with `promote_to_production` using GitHub's UI.
+First things first, bump the `pubspec.yaml` version number. This can be in a PR making a change or a separate PR.
+Use [semantic versioning](https://semver.org/) to determine
+which part to increment. The version number after the `+` should also be incremented. For example `1.2.3+010203`
+with a patch should become `1.2.4+010204`.
 
-More information about doing these things locally is available at [go/flutter-gallery-manual-deployment](http://go/flutter-gallery-manual-deployment).
+Then, use the following workflows. It is strongly recommended to use the staging/beta environments when available, before deploying to production.
+
+- [Deploy to Play Store](https://github.com/flutter/gallery/actions/workflows/release_deploy_play_store.yml): Uses Fastlane to create a [beta](https://play.google.com/console/u/0/developers/7661132837216938445/app/4974617875198505129/tracks/open-testing) (freely available on the [Play Store](https://play.google.com/apps/testing/io.flutter.demo.gallery)), promote an existing beta to production, or publish straight to [production](https://play.google.com/console/u/0/developers/7661132837216938445/app/4974617875198505129/tracks/production) ([Play Store](https://play.google.com/store/apps/details?id=io.flutter.demo.gallery)).
+  > **Note**
+  > Once an .aab is released with a particular version number, it can't be replaced. The version number must be incremented again.
+- [Deploy to web](https://github.com/flutter/gallery/actions/workflows/release_deploy_web.yml): Deploys a web build to the Firebase-hosted [staging](https://gallery-flutter-staging.web.app) or [production](https://gallery.flutter.dev) site.
+- [Draft GitHub release](https://github.com/flutter/gallery/actions/workflows/release_draft_github_release.yml): Drafts a GitHub release, including automatically generated release notes and packaged builds for Android, macOS, Linux, and Windows.
+  > **Note**
+  > The release draft is private until published. Upon being published, the specified version tag will be created.
+- [Publish on Windows Store](): A workflow file for releasing to the Windows Store. This repository is not currently set up to publish new versions of [the current Windows Store listing](https://www.microsoft.com/store/productId/9PDWCTDFC7QQ). Requires running `msstore init` within the repository and setting repository/environment secrets .
+  > See the instructions in the [documentation](https://docs.flutter.dev/deployment/windows#github-actions-cicd) for more information.
+
+For posterity, information about doing these things locally is available at [go/flutter-gallery-manual-deployment](http://go/flutter-gallery-manual-deployment).
+
+</details>
 
 ## Tests
 
-The gallery has its own set of unit and integration tests. Flutter itself also uses it in tests. To enable breaking changes, the gallery version is pinned in two places:
+The gallery has its own set of unit, golden, and integration tests.
+
+In addition, Flutter itself uses the gallery in tests. To enable breaking changes, the gallery version is pinned in two places:
 
 - `flutter analyze`: https://github.com/flutter/tests/blob/master/registry/flutter_gallery.test
 - DeviceLab tests: https://github.com/flutter/flutter/blob/master/dev/devicelab/lib/versions/gallery.dart
-
 
 [latest release]: https://github.com/flutter/gallery/releases/latest

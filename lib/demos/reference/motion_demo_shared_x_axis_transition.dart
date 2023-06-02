@@ -9,9 +9,9 @@ import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
 // BEGIN sharedXAxisTransitionDemo
 
 class SharedXAxisTransitionDemo extends StatefulWidget {
-  const SharedXAxisTransitionDemo({Key? key}) : super(key: key);
+  const SharedXAxisTransitionDemo({super.key});
   @override
-  _SharedXAxisTransitionDemoState createState() =>
+  State<SharedXAxisTransitionDemo> createState() =>
       _SharedXAxisTransitionDemoState();
 }
 
@@ -39,7 +39,7 @@ class _SharedXAxisTransitionDemoState extends State<SharedXAxisTransitionDemo> {
               '(${localizations.demoSharedXAxisDemoInstructions})',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2!
+                  .titleSmall!
                   .copyWith(color: Colors.white),
             ),
           ],
@@ -68,7 +68,7 @@ class _SharedXAxisTransitionDemoState extends State<SharedXAxisTransitionDemo> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -102,7 +102,7 @@ class _CoursePage extends StatelessWidget {
         const SizedBox(height: 16),
         Text(
           localizations.demoSharedXAxisCoursePageTitle,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
@@ -173,74 +173,73 @@ class _SignInPage extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxHeight = constraints.maxHeight;
-        final spacing = SizedBox(height: maxHeight / 25);
+        const spacing = SizedBox(height: 10);
 
-        return ListView(
-          children: [
-            SizedBox(height: maxHeight / 10),
-            Image.asset(
-              'placeholders/avatar_logo.png',
-              package: 'flutter_gallery_assets',
-              width: 80,
-            ),
-            spacing,
-            Text(
-              localizations!.demoSharedXAxisSignInWelcomeText,
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            spacing,
-            Text(
-              localizations.demoSharedXAxisSignInSubtitleText,
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
+        return Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: maxHeight / 10),
+              Image.asset(
+                'placeholders/avatar_logo.png',
+                package: 'flutter_gallery_assets',
+                width: 80,
+                height: 80,
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(
-                    top: 40,
-                    start: 15,
-                    end: 15,
-                    bottom: 10,
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      suffixIcon: const Icon(
-                        Icons.visibility,
-                        size: 20,
-                        color: Colors.black54,
+              spacing,
+              Text(
+                localizations!.demoSharedXAxisSignInWelcomeText,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              spacing,
+              Text(
+                localizations.demoSharedXAxisSignInSubtitleText,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey,
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                      top: 40,
+                      start: 10,
+                      end: 10,
+                      bottom: 10,
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        suffixIcon: const Icon(
+                          Icons.visibility,
+                          size: 20,
+                          color: Colors.black54,
+                        ),
+                        labelText:
+                            localizations.demoSharedXAxisSignInTextFieldLabel,
+                        border: const OutlineInputBorder(),
                       ),
-                      isDense: true,
-                      labelText:
-                          localizations.demoSharedXAxisSignInTextFieldLabel,
-                      border: const OutlineInputBorder(),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 10),
-                  child: TextButton(
+                  TextButton(
                     onPressed: () {},
                     child: Text(
                       localizations.demoSharedXAxisForgotEmailButtonText,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 10),
-                  child: TextButton(
+                  spacing,
+                  TextButton(
                     onPressed: () {},
                     child: Text(
                       localizations.demoSharedXAxisCreateAccountButtonText,
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

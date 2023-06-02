@@ -1,11 +1,9 @@
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:gallery/studies/reply/model/email_store.dart';
 import 'package:provider/provider.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({Key key}) : super(key: key);
+  const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +43,11 @@ class SearchPage extends StatelessWidget {
                 ),
               ),
               const Divider(thickness: 1),
-              Expanded(
+              const Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       _SectionHeader(title: 'YESTERDAY'),
                       _SearchHistoryTile(
                         search: '481 Van Brunt Street',
@@ -86,9 +84,8 @@ class SearchPage extends StatelessWidget {
 }
 
 class _SectionHeader extends StatelessWidget {
-  const _SectionHeader({
-    @required this.title,
-  }) : assert(title != null);
+  const _SectionHeader({required this.title});
+
   final String title;
 
   @override
@@ -101,7 +98,7 @@ class _SectionHeader extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: Theme.of(context).textTheme.button,
+        style: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }
@@ -110,10 +107,9 @@ class _SectionHeader extends StatelessWidget {
 class _SearchHistoryTile extends StatelessWidget {
   const _SearchHistoryTile({
     this.icon = Icons.access_time,
-    @required this.search,
-    @required this.address,
-  })  : assert(search != null),
-        assert(address != null);
+    required this.search,
+    required this.address,
+  });
 
   final IconData icon;
   final String search;

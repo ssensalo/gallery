@@ -2,20 +2,17 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'package:flutter/material.dart';
-
 import 'package:gallery/layout/adaptive.dart';
 import 'package:gallery/studies/rally/colors.dart';
 import 'package:gallery/studies/rally/data.dart';
 import 'package:gallery/studies/rally/routes.dart' as rally_route;
 
 class SettingsView extends StatefulWidget {
-  const SettingsView({Key key}) : super(key: key);
+  const SettingsView({super.key});
 
   @override
-  _SettingsViewState createState() => _SettingsViewState();
+  State<SettingsView> createState() => _SettingsViewState();
 }
 
 class _SettingsViewState extends State<SettingsView> {
@@ -52,7 +49,7 @@ class _SettingsItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        primary: Colors.white,
+        foregroundColor: Colors.white,
         padding: EdgeInsets.zero,
       ),
       onPressed: () {

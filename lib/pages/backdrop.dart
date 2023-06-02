@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -21,33 +19,36 @@ const double _settingsButtonHeightMobile = 40;
 
 class Backdrop extends StatefulWidget {
   const Backdrop({
-    Key key,
+    super.key,
+    required this.isDesktop,
     this.settingsPage,
     this.homePage,
-  }) : super(key: key);
+  });
 
-  final Widget settingsPage;
-  final Widget homePage;
+  final bool isDesktop;
+  final Widget? settingsPage;
+  final Widget? homePage;
 
   @override
-  _BackdropState createState() => _BackdropState();
+  State<Backdrop> createState() => _BackdropState();
 }
 
 class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
-  AnimationController _settingsPanelController;
-  AnimationController _iconController;
-  FocusNode _settingsPageFocusNode;
-  ValueNotifier<bool> _isSettingsOpenNotifier;
-  Widget _settingsPage;
-  Widget _homePage;
+  late AnimationController _settingsPanelController;
+  late AnimationController _iconController;
+  late FocusNode _settingsPageFocusNode;
+  late ValueNotifier<bool> _isSettingsOpenNotifier;
+  late Widget _settingsPage;
+  late Widget _homePage;
 
   @override
   void initState() {
     super.initState();
     _settingsPanelController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
+        vsync: this,
+        duration: widget.isDesktop
+            ? settingsPanelMobileAnimationDuration
+            : settingsPanelDesktopAnimationDuration);
     _iconController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -198,8 +199,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                     : Alignment.topLeft,
                 scale: CurvedAnimation(
                   parent: _settingsPanelController,
-                  curve: Curves.easeIn,
-                  reverseCurve: Curves.easeOut,
+                  curve: Curves.fastOutSlowIn,
                 ),
                 child: Align(
                   alignment: AlignmentDirectional.topEnd,
@@ -240,11 +240,11 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 }
 
 class _SettingsIcon extends AnimatedWidget {
-  const _SettingsIcon(
-      {this.animationController,
-      this.toggleSettings,
-      this.isSettingsOpenNotifier})
-      : super(listenable: animationController);
+  const _SettingsIcon({
+    required this.animationController,
+    required this.toggleSettings,
+    required this.isSettingsOpenNotifier,
+  }) : super(listenable: animationController);
 
   final AnimationController animationController;
   final VoidCallback toggleSettings;
@@ -252,8 +252,8 @@ class _SettingsIcon extends AnimatedWidget {
 
   String _settingsSemanticLabel(bool isOpen, BuildContext context) {
     return isOpen
-        ? GalleryLocalizations.of(context).settingsButtonCloseLabel
-        : GalleryLocalizations.of(context).settingsButtonLabel;
+        ? GalleryLocalizations.of(context)!.settingsButtonCloseLabel
+        : GalleryLocalizations.of(context)!.settingsButtonLabel;
   }
 
   @override
@@ -287,7 +287,7 @@ class _SettingsIcon extends AnimatedWidget {
                 toggleSettings();
                 SemanticsService.announce(
                   _settingsSemanticLabel(isSettingsOpenNotifier.value, context),
-                  GalleryOptions.of(context).resolvedTextDirection(),
+                  GalleryOptions.of(context).resolvedTextDirection()!,
                 );
               },
               child: Padding(

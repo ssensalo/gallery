@@ -2,22 +2,21 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
 
 // BEGIN tooltipDemo
 
 class TooltipDemo extends StatelessWidget {
-  const TooltipDemo({Key key}) : super(key: key);
+  const TooltipDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localizations = GalleryLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(GalleryLocalizations.of(context).demoTooltipTitle),
+        title: Text(localizations.demoTooltipTitle),
       ),
       body: Center(
         child: Padding(
@@ -26,13 +25,12 @@ class TooltipDemo extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                GalleryLocalizations.of(context).demoTooltipInstructions,
+                localizations.demoTooltipInstructions,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
               Tooltip(
-                message:
-                    GalleryLocalizations.of(context).starterAppTooltipSearch,
+                message: localizations.starterAppTooltipSearch,
                 child: IconButton(
                   color: Theme.of(context).colorScheme.primary,
                   onPressed: () {},

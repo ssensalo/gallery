@@ -6,10 +6,10 @@ import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
 // BEGIN sharedYAxisTransitionDemo
 
 class SharedYAxisTransitionDemo extends StatefulWidget {
-  const SharedYAxisTransitionDemo({Key? key}) : super(key: key);
+  const SharedYAxisTransitionDemo({super.key});
 
   @override
-  _SharedYAxisTransitionDemoState createState() =>
+  State<SharedYAxisTransitionDemo> createState() =>
       _SharedYAxisTransitionDemoState();
 }
 
@@ -76,7 +76,7 @@ class _SharedYAxisTransitionDemoState extends State<SharedYAxisTransitionDemo>
               '(${localizations.demoSharedYAxisDemoInstructions})',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2!
+                  .titleSmall!
                   .copyWith(color: Colors.white),
             ),
           ],

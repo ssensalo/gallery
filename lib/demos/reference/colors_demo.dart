@@ -21,118 +21,120 @@ class _Palette {
   final String name;
   final MaterialColor primary;
   final MaterialAccentColor? accent;
+
   // Titles for indices > threshold are white, otherwise black.
   final int threshold;
 }
 
 List<_Palette> _allPalettes(BuildContext context) {
+  final localizations = GalleryLocalizations.of(context)!;
   return [
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsRed,
+      name: localizations.colorsRed,
       primary: Colors.red,
       accent: Colors.redAccent,
       threshold: 300,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsPink,
+      name: localizations.colorsPink,
       primary: Colors.pink,
       accent: Colors.pinkAccent,
       threshold: 200,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsPurple,
+      name: localizations.colorsPurple,
       primary: Colors.purple,
       accent: Colors.purpleAccent,
       threshold: 200,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsDeepPurple,
+      name: localizations.colorsDeepPurple,
       primary: Colors.deepPurple,
       accent: Colors.deepPurpleAccent,
       threshold: 200,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsIndigo,
+      name: localizations.colorsIndigo,
       primary: Colors.indigo,
       accent: Colors.indigoAccent,
       threshold: 200,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsBlue,
+      name: localizations.colorsBlue,
       primary: Colors.blue,
       accent: Colors.blueAccent,
       threshold: 400,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsLightBlue,
+      name: localizations.colorsLightBlue,
       primary: Colors.lightBlue,
       accent: Colors.lightBlueAccent,
       threshold: 500,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsCyan,
+      name: localizations.colorsCyan,
       primary: Colors.cyan,
       accent: Colors.cyanAccent,
       threshold: 600,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsTeal,
+      name: localizations.colorsTeal,
       primary: Colors.teal,
       accent: Colors.tealAccent,
       threshold: 400,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsGreen,
+      name: localizations.colorsGreen,
       primary: Colors.green,
       accent: Colors.greenAccent,
       threshold: 500,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsLightGreen,
+      name: localizations.colorsLightGreen,
       primary: Colors.lightGreen,
       accent: Colors.lightGreenAccent,
       threshold: 600,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsLime,
+      name: localizations.colorsLime,
       primary: Colors.lime,
       accent: Colors.limeAccent,
       threshold: 800,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsYellow,
+      name: localizations.colorsYellow,
       primary: Colors.yellow,
       accent: Colors.yellowAccent,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsAmber,
+      name: localizations.colorsAmber,
       primary: Colors.amber,
       accent: Colors.amberAccent,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsOrange,
+      name: localizations.colorsOrange,
       primary: Colors.orange,
       accent: Colors.orangeAccent,
       threshold: 700,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsDeepOrange,
+      name: localizations.colorsDeepOrange,
       primary: Colors.deepOrange,
       accent: Colors.deepOrangeAccent,
       threshold: 400,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsBrown,
+      name: localizations.colorsBrown,
       primary: Colors.brown,
       threshold: 200,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsGrey,
+      name: localizations.colorsGrey,
       primary: Colors.grey,
       threshold: 500,
     ),
     _Palette(
-      name: GalleryLocalizations.of(context)!.colorsBlueGrey,
+      name: localizations.colorsBlueGrey,
       primary: Colors.blueGrey,
       threshold: 500,
     ),
@@ -141,11 +143,10 @@ List<_Palette> _allPalettes(BuildContext context) {
 
 class _ColorItem extends StatelessWidget {
   const _ColorItem({
-    Key? key,
     required this.index,
     required this.color,
     this.prefix = '',
-  }) : super(key: key);
+  });
 
   final int index;
   final Color color;
@@ -175,11 +176,8 @@ class _ColorItem extends StatelessWidget {
   }
 }
 
-class PaletteTabView extends StatelessWidget {
-  const PaletteTabView({
-    Key? key,
-    required this.colors,
-  }) : super(key: key);
+class _PaletteTabView extends StatelessWidget {
+  const _PaletteTabView({required this.colors});
 
   final _Palette colors;
   static const primaryKeys = <int>[
@@ -199,10 +197,10 @@ class PaletteTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final whiteTextStyle = textTheme.bodyText2!.copyWith(
+    final whiteTextStyle = textTheme.bodyMedium!.copyWith(
       color: Colors.white,
     );
-    final blackTextStyle = textTheme.bodyText2!.copyWith(
+    final blackTextStyle = textTheme.bodyMedium!.copyWith(
       color: Colors.black,
     );
     return Scrollbar(
@@ -231,7 +229,7 @@ class PaletteTabView extends StatelessWidget {
 }
 
 class ColorsDemo extends StatelessWidget {
-  const ColorsDemo({Key? key}) : super(key: key);
+  const ColorsDemo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -251,7 +249,7 @@ class ColorsDemo extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            for (final palette in palettes) PaletteTabView(colors: palette),
+            for (final palette in palettes) _PaletteTabView(colors: palette),
           ],
         ),
       ),

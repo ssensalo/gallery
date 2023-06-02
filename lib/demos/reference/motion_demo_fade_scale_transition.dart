@@ -9,10 +9,10 @@ import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
 // BEGIN fadeScaleTransitionDemo
 
 class FadeScaleTransitionDemo extends StatefulWidget {
-  const FadeScaleTransitionDemo({Key? key}) : super(key: key);
+  const FadeScaleTransitionDemo({super.key});
 
   @override
-  _FadeScaleTransitionDemoState createState() =>
+  State<FadeScaleTransitionDemo> createState() =>
       _FadeScaleTransitionDemoState();
 }
 
@@ -75,7 +75,7 @@ class _FadeScaleTransitionDemoState extends State<FadeScaleTransitionDemo>
               '(${localizations.demoFadeScaleDemoInstructions})',
               style: Theme.of(context)
                   .textTheme
-                  .subtitle2!
+                  .titleSmall!
                   .copyWith(color: Colors.white),
             ),
           ],

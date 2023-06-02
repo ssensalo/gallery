@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,16 +9,16 @@ import 'package:flutter_test/flutter_test.dart';
 Future<void> pumpWidgetWithImages(
   WidgetTester tester,
   Widget widget,
-  List<String> assetNames,
+  List<AssetImage> assets,
 ) async {
-  Future<void> precacheFuture;
+  Future<void>? precacheFuture;
   await tester.pumpWidget(
     Builder(builder: (buildContext) {
       precacheFuture = tester.runAsync(() async {
         await Future.wait([
-          for (final assetName in assetNames)
+          for (final asset in assets)
             precacheImage(
-              AssetImage(assetName, package: 'flutter_gallery_assets'),
+              asset,
               buildContext,
             ),
         ]);

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
 
@@ -16,10 +14,10 @@ enum BannerDemoAction {
 }
 
 class BannerDemo extends StatefulWidget {
-  const BannerDemo({Key key}) : super(key: key);
+  const BannerDemo({super.key});
 
   @override
-  _BannerDemoState createState() => _BannerDemoState();
+  State<BannerDemo> createState() => _BannerDemoState();
 }
 
 class _BannerDemoState extends State<BannerDemo> with RestorationMixin {
@@ -29,7 +27,7 @@ class _BannerDemoState extends State<BannerDemo> with RestorationMixin {
   String get restorationId => 'banner_demo';
 
   @override
-  void restoreState(RestorationBucket oldBucket, bool initialRestore) {
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
     registerForRestoration(_displayBanner, 'display_banner');
     registerForRestoration(_showMultipleActions, 'show_multiple_actions');
     registerForRestoration(_showLeading, 'show_leading');
@@ -68,8 +66,9 @@ class _BannerDemoState extends State<BannerDemo> with RestorationMixin {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final localizations = GalleryLocalizations.of(context)!;
     final banner = MaterialBanner(
-      content: Text(GalleryLocalizations.of(context).bannerDemoText),
+      content: Text(localizations.bannerDemoText),
       leading: _showLeading.value
           ? CircleAvatar(
               backgroundColor: colorScheme.primary,
@@ -83,7 +82,7 @@ class _BannerDemoState extends State<BannerDemo> with RestorationMixin {
               _displayBanner.value = false;
             });
           },
-          child: Text(GalleryLocalizations.of(context).signIn),
+          child: Text(localizations.signIn),
         ),
         if (_showMultipleActions.value)
           TextButton(
@@ -92,7 +91,7 @@ class _BannerDemoState extends State<BannerDemo> with RestorationMixin {
                 _displayBanner.value = false;
               });
             },
-            child: Text(GalleryLocalizations.of(context).dismiss),
+            child: Text(localizations.dismiss),
           ),
       ],
       backgroundColor: colorScheme.background,
@@ -101,28 +100,25 @@ class _BannerDemoState extends State<BannerDemo> with RestorationMixin {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(GalleryLocalizations.of(context).demoBannerTitle),
+        title: Text(localizations.demoBannerTitle),
         actions: [
           PopupMenuButton<BannerDemoAction>(
             onSelected: handleDemoAction,
             itemBuilder: (context) => <PopupMenuEntry<BannerDemoAction>>[
               PopupMenuItem<BannerDemoAction>(
                 value: BannerDemoAction.reset,
-                child:
-                    Text(GalleryLocalizations.of(context).bannerDemoResetText),
+                child: Text(localizations.bannerDemoResetText),
               ),
               const PopupMenuDivider(),
               CheckedPopupMenuItem<BannerDemoAction>(
                 value: BannerDemoAction.showMultipleActions,
                 checked: _showMultipleActions.value,
-                child: Text(
-                    GalleryLocalizations.of(context).bannerDemoMultipleText),
+                child: Text(localizations.bannerDemoMultipleText),
               ),
               CheckedPopupMenuItem<BannerDemoAction>(
                 value: BannerDemoAction.showLeading,
                 checked: _showLeading.value,
-                child: Text(
-                    GalleryLocalizations.of(context).bannerDemoLeadingText),
+                child: Text(localizations.bannerDemoLeadingText),
               ),
             ],
           ),
@@ -137,7 +133,7 @@ class _BannerDemoState extends State<BannerDemo> with RestorationMixin {
           }
           return ListTile(
             title: Text(
-              GalleryLocalizations.of(context).starterAppDrawerItem(
+              localizations.starterAppDrawerItem(
                   _displayBanner.value ? index : index + 1),
             ),
           );

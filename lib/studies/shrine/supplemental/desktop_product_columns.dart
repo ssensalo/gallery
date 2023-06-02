@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -22,14 +20,14 @@ const columnTopSpace = 84.0;
 
 class DesktopProductCardColumn extends StatelessWidget {
   const DesktopProductCardColumn({
-    Key key,
-    @required this.alignToEnd,
-    @required this.startLarge,
-    @required this.lowerStart,
-    @required this.products,
-    @required this.largeImageWidth,
-    @required this.smallImageWidth,
-  }) : super(key: key);
+    super.key,
+    required this.alignToEnd,
+    required this.startLarge,
+    required this.lowerStart,
+    required this.products,
+    required this.largeImageWidth,
+    required this.smallImageWidth,
+  });
 
   final List<Product> products;
 

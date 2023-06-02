@@ -4,9 +4,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-
 import 'package:gallery/feature_discovery/animation.dart';
 import 'package:gallery/feature_discovery/overlay.dart';
+import 'package:get_storage/get_storage.dart';
+
+const _featureHighlightShownKey = 'feature_highlight_shown';
 
 /// [Widget] to enforce a global lock system for [FeatureDiscovery] widgets.
 ///
@@ -18,9 +20,9 @@ import 'package:gallery/feature_discovery/overlay.dart';
 class FeatureDiscoveryController extends StatefulWidget {
   final Widget child;
 
-  const FeatureDiscoveryController(this.child, {Key? key}) : super(key: key);
+  const FeatureDiscoveryController(this.child, {super.key});
 
-  static _FeatureDiscoveryControllerState of(BuildContext context) {
+  static _FeatureDiscoveryControllerState _of(BuildContext context) {
     final matchResult =
         context.findAncestorStateOfType<_FeatureDiscoveryControllerState>();
     if (matchResult != null) {
@@ -34,7 +36,7 @@ class FeatureDiscoveryController extends StatefulWidget {
   }
 
   @override
-  _FeatureDiscoveryControllerState createState() =>
+  State<FeatureDiscoveryController> createState() =>
       _FeatureDiscoveryControllerState();
 }
 
@@ -110,7 +112,7 @@ class FeatureDiscovery extends StatefulWidget {
   static const gestureDetectorKey = Key('gesture detector key');
 
   const FeatureDiscovery({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.child,
@@ -118,10 +120,10 @@ class FeatureDiscovery extends StatefulWidget {
     this.onDismiss,
     this.onTap,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
-  _FeatureDiscoveryState createState() => _FeatureDiscoveryState();
+  State<FeatureDiscovery> createState() => _FeatureDiscoveryState();
 }
 
 class _FeatureDiscoveryState extends State<FeatureDiscovery>
@@ -142,7 +144,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
     debugCheckHasDirectionality(ctx);
 
     final deviceSize = MediaQuery.of(ctx).size;
-    final color = widget.color ?? Theme.of(ctx).primaryColor;
+    final color = widget.color ?? Theme.of(ctx).colorScheme.primary;
 
     // Wrap in transparent [Material] to enable widgets that require one.
     return Material(
@@ -226,7 +228,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
           overlay!.markNeedsBuild();
         });
       } else {
-        if (showOverlay && !FeatureDiscoveryController.of(ctx).isLocked) {
+        if (showOverlay && !FeatureDiscoveryController._of(ctx).isLocked) {
           final entry = OverlayEntry(
             builder: (_) => buildOverlay(ctx, getOverlayCenter(ctx)),
           );
@@ -235,7 +237,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
           // another [FeatureDiscovery] widget from trying to show its
           // overlay while the post frame callback and set state are not
           // complete.
-          FeatureDiscoveryController.of(ctx).lock();
+          FeatureDiscoveryController._of(ctx).lock();
 
           SchedulerBinding.instance.addPostFrameCallback((_) {
             setState(() {
@@ -243,7 +245,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
               status = FeatureDiscoveryStatus.closed;
               openController.forward(from: 0.0);
             });
-            Overlay.of(context)?.insert(entry);
+            Overlay.of(context).insert(entry);
           });
         }
       }
@@ -269,7 +271,15 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
 
     initAnimationControllers();
     initAnimations();
-    showOverlay = widget.showOverlay;
+
+    final localStorage = GetStorage();
+    final featureHiglightShown =
+        localStorage.read<bool>(_featureHighlightShownKey) ?? false;
+    localStorage.write(_featureHighlightShownKey, true);
+    showOverlay = widget.showOverlay && !featureHiglightShown;
+    if (showOverlay) {
+      localStorage.write(_featureHighlightShownKey, true);
+    }
   }
 
   void initAnimationControllers() {
@@ -349,7 +359,7 @@ class _FeatureDiscoveryState extends State<FeatureDiscovery>
   ///
   /// This is called upon [tapController] and [dismissController] end.
   void cleanUponOverlayClose() {
-    FeatureDiscoveryController.of(context).unlock();
+    FeatureDiscoveryController._of(context).unlock();
     setState(() {
       status = FeatureDiscoveryStatus.closed;
       showOverlay = false;
